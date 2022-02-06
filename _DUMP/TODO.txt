@@ -1,0 +1,69 @@
+TODO THOUGHTS/NOTES
+
+GOAL
+Implement plan9 operating system on briefcase cluster computer.
+
+TODO
+. take first pass through select whitepapers, https://p9f.org/sys/doc/  ... .ps
+  . INTRODUCTION
+    x Plan 9 From Bell Labs, /9
+		~ big idea: one system (computer) that looks different depending on who is accessing/looking
+		~ ie, don't use a separate computer per person; use one computer and create appearance of many computers
+		~ p9 behavior stems from aggressively driving three guiding principles:
+		~ 1 - resources are named and accessed like files in heirarchical file system
+		~ 2 - one standard protocol (9P) is used to access these systems
+		~ 3 - disjoint heirarchies from different services are joined into single private namespace
+    . The Use of Name Spaces in Plan 9, /names
+    . The Organization of Networks in Plan 9, /net
+		~ kernel network code divided into three layers
+		~ 1: hardware interface 
+		~ 2: protocol processing
+		~ 3: program interface
+		~ device driver connects interface layers via streams (modules)
+			~ stream is bidirectional channel connecting hardware int or protocol device to user process
+			~ user process inserts/removes data form its end of stream
+	+-----<		~ kernel passes the data to the other end of the stream
+	|	~ network connections represented as pseudo-devices, 'protocol devices'
+	|	~ device drivers 'serve' directory structures containing files that control aspects of device
+	|	~ each file basically represens aspects of a function or feature of a given device
+	|		~ eg, serial device, to set baud rate, write say, b1200 to /dev/eiaNctl
+	|		~ eg, tcp connection, no 2, at /net/tcp/2
+	|		~     write to file remote to specify remote IP & port, say, 135.104.9.31 5012
+	|		~     write to file local to specify local IP & port, say, 135.104.53.11 564
+	|		~     file status would contain line, tcp/2 1 Established connect
+	+----->	~ interesting...plan9 uses linked list block chains to represent information
+			~ blocks are 'kernel structures' that have a header, containing type, flags, and pointer to body buffer
+			~ buffer contains data or control info..blocks are dynamically allocated from kernel memory
+		~ user level, stream repr by two files, data and ctl
+			~ file open creates stream
+			~ file close destroys stream (basically)
+		~ plan 9 has TCP alternative that runs over IP called IL
+    . Security in Plan 9, /auth
+  . PROGRAMMING
+    . How to Use the Plan 9 C Compiler, /comp
+    . Acid: A Debugger Built From A Language
+    . Maintaining Files on Plan 9 with M, /mk
+    . Plan 9 Mkfiles, /mkfiles
+    . A Manual for the Plan 9 assembler, /asm
+  . USER INTERFACES
+    . 8½, the Plan 9 Window System, /8½
+    . Rc — The Plan 9 Shell, /rc
+    . The Text Editor sam, /sam
+    . Acme: A User Interface for Programmers, /acme
+    . Plumbing and Other Utilities, /plumb
+  . IMPLEMENTATION
+    . Hello World, /utf
+    . Plan 9 C Compilers, /compiler
+    . Adding Application Support for a New Architecture in Plan 9, /libmach
+    . The Plan 9 File Server, /fs
+    . Venti: A new approach to archival storage, /venti
+    . Fossil, an Archival File Server, /fossil
+    . The IL protocol, /il
+    . Lexical File Names in Plan 9, or, Getting Dot-Dot Right, /lexnames
+    . Process Sleep and Wakeup on a Shared-memory Multiprocessor, /sleep
+  x INSTALLATION
+    x The Various Ports, /port
+		~ This is a collection of comments on different hardware architectures supported by plan9
+		~ not much of immediate interest here
+. read through Installation - 9legacy, http://9legacy.org/download.html
+. tinker with Raspberry pi image
